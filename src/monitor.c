@@ -185,6 +185,7 @@ void log_attempt(char *ip_addr, const int success) {
     printf("logging attempt by %s\n", ip_addr);
 
     struct hash_pair *e = hashmap_get(login_map, ip_addr);
+
     if (e != NULL) {
         e->last_attempt = get_cur_time();
         printf("current attempts are: %d\n", e->attempts);
@@ -195,7 +196,10 @@ void log_attempt(char *ip_addr, const int success) {
         }
     } else {
         printf("registering first attempt\n");
-        struct hash_pair p = {.key = ip_addr, .attempts = 1, .last_attempt = get_cur_time()};
+        // ensure in hashmap that this is freed!
+        char *ip = malloc(sizeof(char) * 20);
+        strncpy(ip, ip_addr, 20);
+        struct hash_pair p = {.key = ip, .attempts = 1, .last_attempt = get_cur_time()};
         hashmap_insert(login_map, &p);
     }
     pthread_mutex_unlock(&lock);
