@@ -59,3 +59,10 @@ After installation, you can use the `ssh-monitor` command with the following opt
 ```bash
 sudo ssh-monitor # start the service
 ssh-monitor attempts # view login attempts
+```
+
+## Uninstallation
+To uninstall the ssh-monitor service, run
+```bash
+sudo ./uninstall.sh
+```

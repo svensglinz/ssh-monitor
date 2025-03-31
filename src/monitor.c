@@ -178,7 +178,7 @@ void log_attempt(char *ip_addr, const int success) {
     // if attempt was successful and is in map, remove
     pthread_mutex_lock(&lock);
     if (success) {
-        hashmap_remove(login_map, ip_addr);
+        hashmap_remove(login_map, &ip_addr);
         return;
     }
 
@@ -214,14 +214,13 @@ void *clean_map() {
         size_t len = login_map->len;
         struct hash_node *cur;
 
-        fflush(stdout);
         for (size_t i = 0; i < len; i++) {
             cur = login_map->elems[i];
             while (cur != NULL) {
-                const struct hash_pair *p = (struct hash_pair *) cur->elem;
+                struct hash_pair *p = (struct hash_pair *) cur->elem;
                 if (p->last_attempt - cur_time >= MAX_BLOCK_TIME) {
                     cur = cur->next;
-                    hashmap_remove(login_map, p->key);
+                    hashmap_remove(login_map, &p->key);
                 } else {
                     cur = cur->next;
                 }
