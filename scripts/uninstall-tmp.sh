@@ -48,3 +48,6 @@ fi
 echo ""
 echo "$APP_NAME successfully uninstalled"
 echo "*******************************"
+
+# remove uninstall script itself
+rm -- "$0"

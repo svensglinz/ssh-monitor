@@ -8,7 +8,7 @@ export LOG_PATH="{{LOG_PATH}}"
 ATTEMPTS="sqlite3 $DB_PATH/ip_logins.db '.mode box' '.headers on' 'SELECT * FROM logins ORDER BY last_attempt DESC LIMIT 6;'"
 BLOCKED="sudo ipset -L ssh_blocklist | grep -A 1000 'Members'"
 LOG="less $LOG_PATH/ssh-monitor.log"
-START="{{EXEC_PATH}}"
+EXEC_PATH="{{EXEC_PATH}}"
 
 # Display usage instructions
 usage() {
@@ -51,11 +51,13 @@ while getopts "t:n:" opt; do
     \?)
       exit 1
     esac
-  done
+done
 
 if [ "$(id -u)" -ne 0 ]; then
        echo "start application as root"
        exit 1
 fi
-eval "$START -n $val_n -t $val_t"
+
+eval "$EXEC_PATH" -n "$val_n" -t "$val_t"
+
 exit 0

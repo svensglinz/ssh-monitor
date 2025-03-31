@@ -68,6 +68,7 @@ void cleanup_fun(void *elem) {
 }
 
 struct args *args;
+
 /*
  * Environ variables:
  * DB_PATH
@@ -244,7 +245,6 @@ int main(int argc, char **argv) {
     pthread_mutex_init(&lock, NULL);
     args = parse_args(argc, argv);
     init();
-
     // start cleanup thread
     pthread_t cleanup_thread;
     pthread_create(&cleanup_thread, NULL, clean_map, NULL);

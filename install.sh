@@ -13,7 +13,7 @@ SCRIPT_PATH="scripts/ssh-monitor-tmp.sh"
 UNINSTALL_PATH="scripts/uninstall-tmp.sh"
 
 # set working directory
-EXEC_DIR="$(dirname ${BASH_SOURCE[0]})"
+EXEC_DIR="$(dirname "${BASH_SOURCE[0]}")"
 cd "$EXEC_DIR"
 
 # script must be run as root
@@ -84,7 +84,7 @@ if [ ! -d "$LOG_PATH" ]; then
 fi
 
 # replace placeholders in user script and finalize install
-sed "s|{{DB_PATH}}|$DB_PATH|g; s|{{LOG_PATH}}|$LOG_PATH|g; s|{{EXEC_PATH}}|$BIN_PATH/$APP_NAME-bin|g;" "$SCRIPT_PATH" > "$SCRIPT_PATH.tmp"
+sed "s|{{DB_PATH}}|$DB_PATH|g; s|{{LOG_PATH}}|$LOG_PATH|g; s|{{EXEC_PATH}}|$APP_NAME-bin|g;" "$SCRIPT_PATH" > "$SCRIPT_PATH.tmp"
 install -m 775 "bin/ssh-monitor" "$BIN_PATH/$APP_NAME-bin" # not to be executed by user
 install -m 775 "$SCRIPT_PATH.tmp" "$BIN_PATH/$APP_NAME"
 rm "$SCRIPT_PATH.tmp"

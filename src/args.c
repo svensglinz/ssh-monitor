@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include "args.h"
 
-
 int arg_to_int(char *arg) {
   char *end;
   long out = strtol(arg, &end, 10);
@@ -18,7 +17,7 @@ struct args *parse_args(int argc, char **argv) {
   int c;
   struct args *args = calloc(sizeof(struct args), 1);
 
-    while ((c = getopt(argc, argv, "n:t:"))) {
+    while ((c = getopt(argc, argv, "n:t:")) != -1) {
       switch (c) {
         case 'n': args->n = arg_to_int(optarg); break;
         case 't': args->t = arg_to_int(optarg); break;
