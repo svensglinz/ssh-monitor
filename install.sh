@@ -9,8 +9,8 @@ LOG_PATH="/var/log/ssh-monitor"
 APP_NAME="ssh-monitor"
 
 # DO NOT CHANGE
-SCRIPT_PATH="scripts/ssh-monitor.sh"
-UNINSTALL_PATH="uninstall.sh"
+SCRIPT_PATH="scripts/ssh-monitor-tmp.sh"
+UNINSTALL_PATH="scripts/uninstall-tmp.sh"
 
 # set working directory
 EXEC_DIR="$(dirname ${BASH_SOURCE[0]})"
@@ -58,6 +58,10 @@ rollback() {
 
 trap rollback ERR
 
+echo "installing $APP_NAME"
+echo "*******************************"
+echo ""
+
 # check dependencies
 check_and_install "sqlite3"
 check_and_install "ipset"
@@ -66,7 +70,6 @@ check_and_install "less"
 check_and_install "make"
 
 # installing application
-echo "installing $APP_NAME"
 make
 
 # create directories for logs and database
@@ -88,8 +91,10 @@ rm "$SCRIPT_PATH.tmp"
 
 # finish uninstall script
 sed "s|{{DB_PATH}}|$DB_PATH|g; s|{{LOG_PATH}}|$LOG_PATH|g; s|{{APP_NAME}}|$APP_NAME|g; s|{{BIN_PATH}}|$BIN_PATH|g;" "$UNINSTALL_PATH" > "$UNINSTALL_PATH.tmp"
-mv "$UNINSTALL_PATH.tmp" "$UNINSTALL_PATH"
+mv "$UNINSTALL_PATH.tmp" "./uninstall.sh"
 chmod +x "$UNINSTALL_PATH"
 
+echo ""
 echo "Installation complete!"
 echo "Run uninstall.sh to uninstall the application"
+echo "*******************************"

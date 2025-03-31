@@ -1,9 +1,9 @@
 #!/bin/bash
 
-BIN_PATH="/usr/local/bin"
-DB_PATH="/var/lib/ssh-monitor"
-LOG_PATH="/var/log/ssh-monitor"
-APP_NAME="ssh-monitor"
+BIN_PATH="{{BIN_PATH}}"
+DB_PATH="{{DB_PATH}}"
+LOG_PATH="{{LOG_PATH}}"
+APP_NAME="{{APP_NAME}}"
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "please run script as root"
