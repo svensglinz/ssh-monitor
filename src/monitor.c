@@ -134,9 +134,9 @@ void check_for_event() {
     size_t length;
     if (sd_journal_get_data(journal, "MESSAGE", &data, &length) >= 0) {
         // extract IP address if login attempt via password
-        if (strcasestr((char *) data, "password")) {
+        if (strstr((char *) data, "password")) {
             // check if login was accepted or not
-            int accepted = strcasestr((char *) data, "accepted") != NULL;
+            int accepted = strstr((char *) data, "Accepted") != NULL;
             const char *ip_start = strstr((char *) data, "from");
 
             // extract IP addr
