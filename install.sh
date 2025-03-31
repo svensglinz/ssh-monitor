@@ -12,6 +12,10 @@ APP_NAME="ssh-monitor"
 SCRIPT_PATH="scripts/ssh-monitor.sh"
 UNINSTALL_PATH="uninstall.sh"
 
+# set working directory
+EXEC_DIR="$(dirname ${BASH_SOURCE[0]})"
+cd "$EXEC_DIR"
+
 # script must be run as root
 if [ "$(id -u)" -ne 0 ]; then
   echo "Please run script as root"
