@@ -1,8 +1,9 @@
 CC=gcc
 FLAGS=-O3 -Iinclude
-SRC_DIR=./src
+SRC_DIR=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))src
+
 OBJS := $(wildcard $(SRC_DIR)/*.c)
-OUTPUT= ./bin/ssh-monitor
+OUTPUT=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))bin/ssh-monitor
 LFLAGS=-lsqlite3 -lsystemd
 all: $(OUTPUT)
 
