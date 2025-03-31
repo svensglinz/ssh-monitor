@@ -14,20 +14,28 @@ that exceed a specified number of failed attempts.
 
 ## Installation
 
-1.  **Clone the Repository:**
+0. **Clone the Repository:**
 
     ```bash
     git clone git@github.com:svensglinz/ssh-monitor.git
     cd ./ssh-monitor
     ```
-    
+1. **Install development dependencies**
+
+   Make sure to have the C header files for `libsystemd` and `libsqlite3` available on your system
+   to be able to compile the binary.
+
+    ```bash
+    sudo apt install libsystemd-dev libsqlite3-dev
+    ```
+   
 2.  **Run the Installation Script:**
 
     ```bash
     sudo chmod +x ./install.sh
     sudo ./install.sh
     ```
-
+        
     The install script will:
 
     * Check and install required dependencies (`sqlite3`, `ipset`, `iptables`, `less`, `make`).
@@ -50,8 +58,8 @@ The following variables can be configured at the beginning of the `install.sh` s
 After installation, you can use the `ssh-monitor` command with the following options:
 
 * `ssh-monitor`: Starts the `ssh-monitor` service (must be run as root).
-* `ssh-monitor -n 3 -t 1000` Starts the `ssh-monitor` and blocks IP addresses for `-t` seconds after
-* more or equal than `-n` login attempts within any `-t` seconds window
+* `ssh-monitor -n 3 -t 1000` Starts the `ssh-monitor` and blocks IP addresses for `-t` seconds after 
+more or equal than `-n` login attempts within any `-t` seconds window
 * `ssh-monitor attempts`: Shows the last 6 login attempts from the database.
 * `ssh-monitor blocked`: Lists all currently blocked IP addresses.
 * `ssh-monitor log`: Views the `ssh-monitor` log file.

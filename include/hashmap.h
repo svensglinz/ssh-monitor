@@ -21,9 +21,26 @@ struct hashmap {
 
 /**
  * @struct hashmap_params
+ * @brief Structure that holds configuration options for the hashmap.
  *
- * structure that holds configuration options
- * for the hashmap (size of elements (key, value), comparator and hash function)
+ * @details This structure allows you to configure various aspects of the hashmap,
+ * including the size of elements (key, value), comparator and hash functions,
+ * and a cleanup function.
+ *
+ * @param obj_size Size of each element (key, value) in bytes.
+ * @param cmp_fun  Function pointer to a comparator function used to compare keys.
+ * The function receives pointers to the elements passed in hashmap_insert() as an argument
+ * It should return 0 if the keys are not equal, and non-zero if they are.
+ *
+ * @param hash_fun Function pointer to a hash function used to generate hash values from keys.
+ * The function receives a pointer to the element passed in hashmap_insert() as an argument
+ *
+ * @param cleanup_fun Function pointer to a cleanup function called before an element is removed from the hashmap.
+ * The function receives a pointer to the element passed in hashmap_insert() as an argument
+ * If no cleanup is required, set this to `NULL`.
+ *
+ * @note The `cleanup_fun` is particularly useful when storing dynamically allocated data in the hashmap.
+ * It ensures that memory is properly freed before the element is removed.
  */
 struct hashmap_params {
     uint16_t obj_size;

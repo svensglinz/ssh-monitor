@@ -13,14 +13,20 @@ EXEC_PATH="{{EXEC_PATH}}"
 # Display usage instructions
 usage() {
   cat <<EOF
-Usage: ssh-monitor [option]
+Usage: ssh-monitor [options1] | [options2]
 
-Options:
+options1:
   attempts   Show the last 6 login attempts from the database.
   blocked    List all currently blocked IPs from the IP set.
   log        View the ssh-monitor log file.
-  start      Start the ssh-monitor service.
-  stop       Stop the ssh-monitor service.
+  -h         Show this help menu.
+
+options2:
+  -n <number>  Number of max. attempts before IP is blocked.
+  -t <seconds> Time window (in seconds) within which max. attempts are registered.
+
+Note: options1 and options2 are mutually exclusive.
+
 EOF
 }
 
@@ -28,12 +34,15 @@ EOF
 case "$1" in
   attempts)
     eval "$ATTEMPTS"
+    exit 0
     ;;
   blocked)
     eval "$BLOCKED"
+    exit 0
     ;;
   log)
     eval "$LOG"
+    exit 0
     ;;
   *)
     ;;
@@ -42,8 +51,12 @@ esac
 val_n=3
 val_t=3600
 
-while getopts "t:n:" opt; do
+while getopts "t:n:h" opt; do
     case $opt in
+      h)
+        usage
+        exit 0
+      ;;
       t) val_t="$OPTARG"
       ;;
       n) val_n="$OPTARG"
