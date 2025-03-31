@@ -56,8 +56,8 @@ time_t get_cur_time() {
 }
 
 int comp_fn(void *a, void *b) {
-    const char *fst = a;
-    const char *snd = b;
+    const char *fst = ((struct hash_pair*)a)->key;
+    const char *snd = ((struct hash_pair*)b)->key;
     return strncmp(fst, snd, strlen(snd)) == 0 ? 1 : 0;
 }
 
