@@ -11,6 +11,8 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 echo "uninstalling $APP_NAME"
+echo "*******************************"
+echo ""
 
 # remove binaries
 if [ -f "$BIN_PATH/$APP_NAME" ]; then
@@ -19,6 +21,7 @@ if [ -f "$BIN_PATH/$APP_NAME" ]; then
 fi
 
 if [ -f "$BIN_PATH/$APP_NAME-bin" ]; then
+  echo "removing $BIN_PATH/$APP_NAME-bin"
     rm -f "$BIN_PATH/$APP_NAME-bin"
 fi
 
@@ -42,4 +45,6 @@ if [ -d "$DB_PATH" ]; then
   fi
 fi
 
+echo ""
 echo "$APP_NAME successfully uninstalled"
+echo "*******************************"

@@ -92,7 +92,7 @@ rm "$SCRIPT_PATH.tmp"
 # finish uninstall script
 sed "s|{{DB_PATH}}|$DB_PATH|g; s|{{LOG_PATH}}|$LOG_PATH|g; s|{{APP_NAME}}|$APP_NAME|g; s|{{BIN_PATH}}|$BIN_PATH|g;" "$UNINSTALL_PATH" > "$UNINSTALL_PATH.tmp"
 mv "$UNINSTALL_PATH.tmp" "./uninstall.sh"
-chmod +x "$UNINSTALL_PATH"
+chmod +x "uninstall.sh"
 
 echo ""
 echo "Installation complete!"

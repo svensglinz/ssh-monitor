@@ -33,7 +33,7 @@ count INT, last_attempt DATE, last_success DATE)";
 const static char *insert_query = "INSERT INTO logins (addr, count, last_attempt, last_success) \
     VALUES ('%s', 1, datetime('now'), %s) \
     ON CONFLICT(addr) DO UPDATE SET \
-    attempt_count = attempt_count + 1, \
+    count = count + 1, \
     last_attempt = datetime('now'), \
     last_success = %s;";
 
