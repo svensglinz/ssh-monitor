@@ -9,9 +9,6 @@
 #include <string.h>
 #include "args.h"
 
-#define MAX_BLOCK_TIME (args->t)
-#define MAX_ATTEMPT (args->n)
-
 // global variables
 static struct hashmap *login_map;
 static sqlite3 *db;
@@ -118,7 +115,7 @@ void init() {
     char cmd_buf[100];
     snprintf(cmd_buf, sizeof(cmd_buf),
              "{ ipset list ssh_blocklist || ipset create ssh_blocklist hash:ip timeout %d; } > /dev/null 2>&1",
-             MAX_BLOCK_TIME);
+             args->t);
     if (system(cmd_buf) < 0) {
         exit(EXIT_FAILURE);
     }
@@ -200,10 +197,10 @@ void log_attempt(char *ip_addr, const int success) {
     if (e != NULL) {
         e->attempts++;
         // entry has not been removed by cleaning thread but should be reset
-        if (e->attempts >= MAX_ATTEMPT &&  cur_time - e->last_attempt >= MAX_BLOCK_TIME) {
+        if (e->attempts >= args->n &&  cur_time - e->last_attempt >= args->t) {
             e->attempts = 1;
             e->last_attempt = cur_time;
-        } else if (e->attempts >= MAX_ATTEMPT){
+        } else if (e->attempts >= args->n){
             block_ip(ip_addr);
         }
     } else {
@@ -228,7 +225,7 @@ void *clean_map() {
             cur = login_map->elems[i];
             while (cur != NULL) {
                 struct hash_pair *p = (struct hash_pair *) cur->elem;
-                if (cur_time - p->last_attempt >= MAX_BLOCK_TIME) {
+                if (cur_time - p->last_attempt >= args->t) {
                     cur = cur->next;
                     hashmap_remove(login_map, &p->key);
                 } else {
@@ -237,7 +234,7 @@ void *clean_map() {
             }
         }
         pthread_mutex_unlock(&lock);
-        sleep(MAX_BLOCK_TIME);
+        sleep(args->t);
     }
 }
 
