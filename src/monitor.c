@@ -6,6 +6,7 @@
 #include <sqlite3.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <string.h>
 
 #define MAX_BLOCK_TIME (60*60)
 #define MAX_ATTEMPT 3
