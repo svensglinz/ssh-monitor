@@ -7,6 +7,7 @@ LFLAGS=-lsqlite3 -lsystemd
 all: $(OUTPUT)
 
 $(OUTPUT): $(OBJS)
+	@mkdir -p ./bin
 	$(CC) $(FLAGS) $(OBJS) -o $@ $(LFLAGS)
 
 clean:
