@@ -151,9 +151,11 @@ void block_ip(const char *ip_addr) {
     }
 
     // print log message
-    const time_t cur_time;
+    time_t cur_time;
+    time(&cur_time);
+
     char time_buf[26];
-    strftime(time_buf, 26, "%Y:%m:%d %H:%M:%S", localtime(&cur_time));
+    strftime(time_buf, 26, "%Y/%m/%d %H:%M:%S", localtime(&cur_time));
     printf("[%s] Blocked: %s\n", time_buf, ip_addr);
 }
 

@@ -1,30 +1,61 @@
-# SSH Login Monitor 
+# SSH-Block Service: ssh-monitor
 
-### Description: 
+This service monitors SSH password login attempts and automatically blocks IP addresses
+that exceed a specified number of failed attempts.
+**It is designed to work with Linux distributions that use journald for system logging.**
 
-I like to have access to my raspberry pi via ssh via password, but get paranoid that someday,
-somebody may figure out my password.
+## Features
 
-To mitigate any brute force attacks or just to be able to see who attempted to login, this ...
-scans the systemd ssh logfiles and scans for any attempts to login via password.
+* **Real-time Monitoring:** Tracks SSH login attempts from system logs.
+* **Automatic Blocking:** Blocks offending IP addresses using `ipset` and `iptables`.
+* **Database Logging:** Stores login attempts in an SQLite3 database.
+* **Configurable Thresholds:** Easily adjust the number of allowed failed attempts.
+* **Easy Installation and Uninstallation:** Provided install and uninstall scripts.
 
-Any attempt is logged in an sqlite database and can be displayed by running `ssh-monitor attempts`
+## Installation
 
-If a specific IP attempts to login 3 times or more within a 10 minute window, the IP address is blocked
-for 10 minutes, using `iptables`
+1.  **Clone the Repository:**
 
-### Install: 
+    ```bash
+    git clone git@github.com:svensglinz/ssh-monitor.git
+    cd ./ssh-monitor
+    ```
+    
+2.  **Run the Installation Script:**
+
+    ```bash
+    sudo chmod +x ./install.sh
+    sudo ./install.sh
+    ```
+
+    The install script will:
+
+    * Check and install required dependencies (`sqlite3`, `ipset`, `iptables`, `less`, `make`).
+    * Compile the `ssh-monitor` binary.
+    * Create directories for the database and logs (`/var/lib/ssh-monitor` and `/var/log/ssh-monitor`).
+    * Install the `ssh-monitor` binary and a wrapper script to `/usr/local/bin`.
+    * Create an `uninstall.sh` script for easy removal.
+
+### User Configurable Variables
+
+The following variables can be configured at the beginning of the `install.sh` script:
+
+* `BIN_PATH`: The directory where the `ssh-monitor` binary and script will be installed (default: `/usr/local/bin`).
+* `DB_PATH`: The directory where the SQLite3 database will be stored (default: `/var/lib/ssh-monitor`).
+* `LOG_PATH`: The directory where the log files will be stored (default: `/var/log/ssh-monitor`).
+* `APP_NAME`: The name of the application (default: `ssh-monitor`).
+
+## Usage
+
+After installation, you can use the `ssh-monitor` command with the following options:
+
+* `ssh-monitor`: Starts the `ssh-monitor` service (must be run as root).
+* `ssh-monitor attempts`: Shows the last 6 login attempts from the database.
+* `ssh-monitor blocked`: Lists all currently blocked IP addresses.
+* `ssh-monitor log`: Views the `ssh-monitor` log file.
+
+**Example:**
+
 ```bash
-git clone XXXX
-
-# Compile and link files
-gcc ./hash-map.c ./monitor.c -lm -lsystemd -lsqlite3 -o monitor
-
-# make file executable
-sudo chmod +x ./log-monitor.sh
-
-# run application in the background
-nohup sudo ./monitor > /dev/null &
-```
-
-
+sudo ssh-monitor # start the service
+ssh-monitor attempts # view login attempts
