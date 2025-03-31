@@ -61,6 +61,11 @@ int comp_fn(void *a, void *b) {
     return strncmp(fst, snd, strlen(snd)) == 0 ? 1 : 0;
 }
 
+void cleanup_fun(void *elem) {
+    struct hash_pair *p = elem;
+    free(p->key);
+}
+
 /*
  * Environ variables:
  * DB_PATH
@@ -100,8 +105,10 @@ void init() {
     struct hashmap_params params = {
         .cmp_fun = comp_fn,
         .hash_fun = hash_fn,
-        .obj_size = sizeof(struct hash_pair)
+        .obj_size = sizeof(struct hash_pair),
+        .cleanup_fun = cleanup_fun
     };
+
     login_map = hashmap_init(16, &params);
 
     // initialize block list
@@ -186,18 +193,18 @@ void log_attempt(char *ip_addr, const int success) {
     printf("logging attempt by %s\n", ip_addr);
 
     struct hash_pair *e = hashmap_get(login_map, &ip_addr);
-
+    time_t cur_time = get_cur_time();
     if (e != NULL) {
-        e->last_attempt = get_cur_time();
-        printf("current attempts are: %d\n", e->attempts);
-        if (e->attempts >= MAX_ATTEMPT) {
+        e->attempts++;
+        // entry has not been removed by cleaning thread but should be reset
+        if (e->attempts >= MAX_ATTEMPT &&  cur_time - e->last_attempt >= MAX_BLOCK_TIME) {
+            e->attempts = 1;
+            e->last_attempt = cur_time;
+        } else if (e->attempts >= MAX_ATTEMPT){
             block_ip(ip_addr);
-        } else {
-            e->attempts++;
         }
     } else {
-        printf("registering first attempt\n");
-        // ensure in hashmap that this is freed!
+        // first attempt
         size_t len = strlen(ip_addr);
         char * const ip = malloc(sizeof(char) * (len + 1));
         strncpy(ip, ip_addr, len + 1);

@@ -15,6 +15,7 @@ struct hashmap* hashmap_init(size_t size, struct hashmap_params *params) {
     m->obj_size = params->obj_size;
     m->hash_fun = params->hash_fun;
     m->cmp_fun = params->cmp_fun;
+    m->cleanup_fun = params->cleanup_fun;
     return m;
 }
 
@@ -79,7 +80,10 @@ int hashmap_remove(struct hashmap* map, void* elem) {
         } else {
             prev->next = cur->next;
         }
-        free(cur); //remove comnet again
+        if (map->cleanup_fun != NULL) {
+            map->cleanup_fun(elem);
+        }
+        free(cur);
         map->n_elem--;
         return 0;
     }

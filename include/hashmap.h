@@ -16,6 +16,7 @@ struct hashmap {
     size_t n_elem;
     uint64_t (*hash_fun)(void*); // hash function
     int (*cmp_fun)(void*, void*); // comparator
+    void (*cleanup_fun)(void *); // destructor
 };
 
 /**
@@ -28,6 +29,7 @@ struct hashmap_params {
     uint16_t obj_size;
     int (*cmp_fun)(void*, void*);
     uint64_t (*hash_fun)(void*);
+    void (*cleanup_fun)(void*);
 };
 
 /**
