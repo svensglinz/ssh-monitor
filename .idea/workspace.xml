@@ -27,11 +27,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee90d4ac-3769-4150-966a-ee1171687892" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/hashmap.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/hashmap.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/monitor.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/install.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/ssh-monitor.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uninstall.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/GitHub Repos.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/GitHub Repos.iml" afterDir="false" />
@@ -102,8 +100,10 @@
       <change beforePath="$PROJECT_DIR$/../ebnfValidator" beforeDir="false" afterPath="$PROJECT_DIR$/../ebnfValidator" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../hash_map" beforeDir="false" afterPath="$PROJECT_DIR$/../hash_map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../serve.c" beforeDir="false" afterPath="$PROJECT_DIR$/../serve.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$" beforeDir="false" afterPath="$PROJECT_DIR$" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/extended-monitor.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/monitor.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/monitor.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../wbesite-backup/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../wbesite-backup/build/asset-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../wbesite-backup/build/cv.json" beforeDir="false" afterPath="$PROJECT_DIR$/../wbesite-backup/build/cv.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../wbesite-backup/build/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/../wbesite-backup/build/favicon.ico" afterDir="false" />
@@ -225,9 +225,10 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/hash_map.c" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/scripts/ssh-monitor.sh" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />
@@ -272,17 +273,13 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/scripts" />
+      <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.ssh_monitor">
     <configuration name="Unnamed" type="CMakeRunConfiguration" factoryName="Application" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -322,7 +319,8 @@
       <workItem from="1729761938354" duration="314000" />
       <workItem from="1730043976274" duration="707000" />
       <workItem from="1742725019242" duration="1629000" />
-      <workItem from="1743348513857" duration="7798000" />
+      <workItem from="1743348513857" duration="7942000" />
+      <workItem from="1743368928124" duration="9758000" />
     </task>
     <servers />
   </component>

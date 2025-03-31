@@ -27,12 +27,12 @@ void log_attempt(char *ip_addr, int success);
 
 // static variables
 const static char *create_tbl_cmd = "CREATE TABLE IF NOT EXISTS logins(addr VARCHAR(20) PRIMARY KEY, \
-count INT, last_attempt DATETIME, last_success DATETIME)";
+count INT, last_attempt DATE, last_success DATE)";
 
 const static char *insert_query = "INSERT INTO logins (addr, count, last_attempt, last_success) \
-    VALUES ('%s', 1, 'now', %s) \
+    VALUES ('%s', 1, datetime('now'), %s) \
     ON CONFLICT(addr) DO UPDATE SET \
-    count = count + 1, \
+    attempt_count = attempt_count + 1, \
     last_attempt = datetime('now'), \
     last_success = %s;";
 
@@ -55,15 +55,28 @@ time_t get_cur_time() {
 }
 
 int comp_fn(void *a, void *b) {
-    const char *fst = (const char *) a;
-    const char *snd = (const char *) b;
+    const char *fst = a;
+    const char *snd = b;
     return strncmp(fst, snd, strlen(snd)) == 0 ? 1 : 0;
 }
+
+/*
+ * Environ variables:
+ * DB_PATH
+ */
 
 // initialize database, journal and hashmap
 void init() {
     // open database
-    if (sqlite3_open("ip_logins.db", &db) != SQLITE_OK) {
+    const char *db_path = getenv("DB_PATH");
+    char path[256];
+    if (db_path) {
+        snprintf(path, sizeof(path), "%s/ip_logins.db", db_path);
+    } else {
+        fprintf(stderr, "db path not specified\n");
+        exit(EXIT_FAILURE);
+    }
+    if (sqlite3_open(path, &db) != SQLITE_OK) {
         fprintf(stderr, "%s", "error opening database\n");
         exit(EXIT_FAILURE);
     }
@@ -151,15 +164,7 @@ void log_attempt(char *ip_addr, const int success) {
 
     char query_buf[450];
     snprintf(query_buf, sizeof(query_buf), insert_query, ip_addr, cur_success, last_success);
-    const static char *create_tbl_cmd = "CREATE TABLE IF NOT EXISTS logins(addr VARCHAR(20) PRIMARY KEY, \
-count INT, last_attempt DATE, last_success DATE)";
 
-    const static char *insert_query = "INSERT INTO logins (addr, count, last_attempt, last_success) \
-    VALUES ('%s', 1, datetime('now'), %s) \
-    ON CONFLICT(addr) DO UPDATE SET \
-    attempt_count = attempt_count + 1, \
-    last_attempt = datetime('now'), \
-    last_success = %s;";
     // record attempt in database
     char *err_msg;
     if (sqlite3_exec(db, query_buf, NULL, NULL, &err_msg) != SQLITE_OK) {

@@ -8,3 +8,6 @@ all: $(OUTPUT)
 
 $(OUTPUT): $(OBJS)
 	$(CC) $(FLAGS) $(OBJS) -o $@ $(LFLAGS)
+
+clean:
+	rm -f $(OUTPUT)
