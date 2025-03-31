@@ -7,9 +7,10 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <string.h>
+#include "args.h"
 
-#define MAX_BLOCK_TIME (60*60)
-#define MAX_ATTEMPT 3
+#define MAX_BLOCK_TIME (args->t)
+#define MAX_ATTEMPT (args->n)
 
 // global variables
 static struct hashmap *login_map;
@@ -66,6 +67,7 @@ void cleanup_fun(void *elem) {
     free(p->key);
 }
 
+struct args *args;
 /*
  * Environ variables:
  * DB_PATH
@@ -225,7 +227,7 @@ void *clean_map() {
             cur = login_map->elems[i];
             while (cur != NULL) {
                 struct hash_pair *p = (struct hash_pair *) cur->elem;
-                if (p->last_attempt - cur_time >= MAX_BLOCK_TIME) {
+                if (cur_time - p->last_attempt >= MAX_BLOCK_TIME) {
                     cur = cur->next;
                     hashmap_remove(login_map, &p->key);
                 } else {
@@ -238,10 +240,9 @@ void *clean_map() {
     }
 }
 
-int main() {
+int main(int argc, char **argv) {
     pthread_mutex_init(&lock, NULL);
-
-    // initialize ip table, hashmap, database
+    args = parse_args(argc, argv);
     init();
 
     // start cleanup thread

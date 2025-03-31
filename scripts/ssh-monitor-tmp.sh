@@ -24,20 +24,6 @@ Options:
 EOF
 }
 
-if [ $# -gt 1 ]; then
-    usage
-    exit 1
-fi
-
-if [ $# -eq 0 ]; then
-    if [ "$(id -u)" -ne 0 ]; then
-      echo "start application as root"
-      exit 1
-    fi
-    eval "$START"
-    exit 0
-fi
-
 # Handle command options
 case "$1" in
   attempts)
@@ -50,8 +36,26 @@ case "$1" in
     eval "$LOG"
     ;;
   *)
-    echo "Error: Invalid option '$1'"
-    usage
-    exit 1
     ;;
 esac
+
+val_n=3
+val_t=3600
+
+while getopts "t:n:" opt; do
+    case $opt in
+      t) val_t="$OPTARG"
+      ;;
+      n) val_n="$OPTARG"
+      ;;
+    \?)
+      exit 1
+    esac
+  done
+
+if [ "$(id -u)" -ne 0 ]; then
+       echo "start application as root"
+       exit 1
+fi
+eval "$START -n $val_n -t $val_t"
+exit 0

@@ -50,6 +50,8 @@ The following variables can be configured at the beginning of the `install.sh` s
 After installation, you can use the `ssh-monitor` command with the following options:
 
 * `ssh-monitor`: Starts the `ssh-monitor` service (must be run as root).
+* `ssh-monitor -n 3 -t 1000` Starts the `ssh-monitor` and blocks IP addresses for `-t` seconds after
+* more or equal than `-n` login attempts within any `-t` seconds window
 * `ssh-monitor attempts`: Shows the last 6 login attempts from the database.
 * `ssh-monitor blocked`: Lists all currently blocked IP addresses.
 * `ssh-monitor log`: Views the `ssh-monitor` log file.
