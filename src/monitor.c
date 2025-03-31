@@ -38,8 +38,8 @@ const static char *insert_query = "INSERT INTO logins (addr, count, last_attempt
 // custom hash function and comparator for hashmap
 // djb2 http://www.cse.yorku.ca/%7Eoz/hash.html
 
-uint64_t hash_fn(void *key) {
-    const char *k = *(const char **)key;
+uint64_t hash_fn(void *e) {
+    const char *k = ((struct hash_pair*)e)->key;
     unsigned long hash = 5381;
     int c;
     while ((c = (int) *k++))
@@ -217,20 +217,10 @@ void log_attempt(char *ip_addr, const int success) {
 void *clean_map() {
     while (1) {
         pthread_mutex_lock(&lock);
-        time_t cur_time = get_cur_time();
-        size_t len = login_map->len;
-        struct hash_node *cur;
-
-        for (size_t i = 0; i < len; i++) {
-            cur = login_map->elems[i];
-            while (cur != NULL) {
-                struct hash_pair *p = (struct hash_pair *) cur->elem;
-                if (cur_time - p->last_attempt >= args->t) {
-                    cur = cur->next;
-                    hashmap_remove(login_map, &p->key);
-                } else {
-                    cur = cur->next;
-                }
+        struct hash_pair * p;
+        HASHMAP_FOREACH(login_map, p) {
+            if (get_cur_time() - p->last_attempt >= args->t) {
+                hashmap_remove(login_map, p);
             }
         }
         pthread_mutex_unlock(&lock);

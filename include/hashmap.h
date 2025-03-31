@@ -2,7 +2,25 @@
 #define UDP_REVERSE_HASHMAP_H
 
 #include <stddef.h>
-#include <netinet/in.h>
+#include <stdint.h>
+#include <stdlib.h>
+
+/**
+* @brief Iterator over all elements in the hashmap
+*
+* @details The element pointed to by `val` is safe to delete
+* during the iteration (ie. hashmap_delete(map, val) can be called)
+*
+* @param[in] map the hashmap to iterate over
+* @apram[in] val a pointer variable to hold each element during iteration
+*/
+
+#define HASHMAP_FOREACH(map, val) \
+struct hash_node *_it; \
+void *_next; \
+for (size_t _i = 0; _i < (map)->len; _i++) \
+    for (_it = (map)->elems[_i]; _it;) \
+        for (val= (void*)_it->elem, _next=_it->next; _it; _it=_next)
 
 struct hash_node {
     struct hash_node *next;
