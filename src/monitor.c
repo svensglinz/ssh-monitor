@@ -41,7 +41,7 @@ const static char *insert_query = "INSERT INTO logins (addr, count, last_attempt
 // djb2 http://www.cse.yorku.ca/%7Eoz/hash.html
 
 uint64_t hash_fn(void *key) {
-    const char *k = (const char *) key;
+    const char *k = *(const char **)key;
     unsigned long hash = 5381;
     int c;
     while ((c = (int) *k++))
@@ -155,7 +155,6 @@ void block_ip(const char *ip_addr) {
     char time_buf[26];
     strftime(time_buf, 26, "%Y:%m:%d %H:%M:%S", localtime(&cur_time));
     printf("[%s] Blocked: %s\n", time_buf, ip_addr);
-    fflush(stdout);
 }
 
 // log attempt into database
@@ -197,8 +196,9 @@ void log_attempt(char *ip_addr, const int success) {
     } else {
         printf("registering first attempt\n");
         // ensure in hashmap that this is freed!
-        char *ip = malloc(sizeof(char) * 20);
-        strncpy(ip, ip_addr, 20);
+        size_t len = strlen(ip_addr);
+        char * const ip = malloc(sizeof(char) * (len + 1));
+        strncpy(ip, ip_addr, len + 1);
         struct hash_pair p = {.key = ip, .attempts = 1, .last_attempt = get_cur_time()};
         hashmap_insert(login_map, &p);
     }
