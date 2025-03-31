@@ -27,6 +27,7 @@ struct hash_node* hashmap_insert(struct hashmap* map, void* elem) {
     struct hash_node *node = malloc(sizeof(struct hash_node) + map->obj_size);
     memcpy(node->elem, elem, map->obj_size);
     node->next = NULL;
+
     uint64_t hash = map->hash_fun(elem);
     size_t idx = hash % map->len;
 

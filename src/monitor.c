@@ -183,7 +183,7 @@ void log_attempt(char *ip_addr, const int success) {
     // if attempt was unsuccessful, add to map
     printf("logging attempt by %s\n", ip_addr);
 
-    struct hash_pair *e = hashmap_get(login_map, ip_addr);
+    struct hash_pair *e = hashmap_get(login_map, &ip_addr);
 
     if (e != NULL) {
         e->last_attempt = get_cur_time();
